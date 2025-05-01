@@ -1,0 +1,22 @@
+{
+  "greet_user": {
+    "prompt": "Hello! I'm TalentScout Hiring Assistant. I'll gather some information and then assess your technical skills through a few questions.\n Shall we begin?"
+  },
+  "gather_info": {
+    "full_name": "Can you please tell me your full name?",
+    "email": "What is your email address?",
+    "phone": "Could you provide your phone number?",
+    "experience": "How many years of professional experience do you have?",
+    "position": "What position(s) are you interested in?",
+    "location": "Where are you currently located?",
+    "tech_stack": "Please list the programming languages, frameworks, databases, and tools you are proficient in (separated by commas).",
+    "resume_url": "If you have a resume or portfolio link, please share it here (optional)."
+  },
+  "confirmation": {
+    "prompt": "Thanks! I have all the information I need. Ready to start your technical interview now."
+  },
+  "generate_message": {
+    "prompt": "Preparing your personalized interview questions. Please wait a moment..."
+  }
+}
+
