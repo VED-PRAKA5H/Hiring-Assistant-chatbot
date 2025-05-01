@@ -123,6 +123,69 @@ def load_form(filepath: str = form_path) -> dict:
         return json.load(f)  # Parse JSON content into dictionary
 
 
+def first_prompt(prof=candidate_profile, tech=tech_stack):
+    """make first system prompt for llm"""
+    # Load existing chat history or initialize new conversation structure
+    ai_history = ai_load_chat_history() or {"conversation": []}
+    # Get conversation array from history
+    ai_conversation = ai_history.get("conversation", [])
+    # Ensure conversation array exists in history
+    ai_history["conversation"] = ai_conversation
+
+    # Append system prompt with generated interview context
+    ai_conversation.append({"role": "system", "content": generate_interview_prompt(prof, tech)})
+    # Add assistant's initial readiness check
+    ai_conversation.append({"role": "assistant", "content": "Are you ready for interview?: "})
+    # Simulate user's affirmative response
+    ai_conversation.append({"role": "user", "content": "yes"})
+    # Persist updated conversation history
+    ai_save_chat_history(ai_history)
+
+    # Return formatted message chain for LLM processing
+    return [
+        SystemMessage(content=generate_interview_prompt(prof, tech)),
+        AIMessage(content="Are you ready for interview?: "),
+        HumanMessage(content="yes")
+    ]
+
+
+# Define path for AI chat log storage
+ai_chat_path = os.path.join(
+    os.path.dirname(os.path.abspath(__file__)),  # Get current script's directory
+    '../data/aichatlog.json'  # Relative path to chat log file
+)
+
+
+def load_prompt_messages(filename=ai_chat_path):
+    """Prepare the prompts to send messages to the LLM."""
+    try:
+        # Attempt to read and parse chat history file
+        with open(filename, "r", encoding="utf-8") as file:
+            history = json.load(file)
+    except (FileNotFoundError, json.JSONDecodeError) as e:
+        # Handle missing file or invalid JSON gracefully
+        print(f"Error loading chat history: {e}")
+        return []
+
+    # Extract conversation thread from history
+    conversation = history.get("conversation", [])
+    messages = []
+    # Convert each entry to appropriate message type
+    for entry in conversation:
+        role = entry.get("role")
+        content = entry.get("content", "")
+        if role == "user":
+            messages.append(HumanMessage(content=content))
+        elif role == "assistant":
+            messages.append(AIMessage(content=content))
+        elif role == "system":
+            messages.append(SystemMessage(content=content))
+        else:
+            # Skip unrecognized message types with warning
+            print(f"Warning: Unrecognized role '{role}' in conversation. Skipping.")
+    return messages
+
+
 
 
 
