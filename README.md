@@ -136,7 +136,7 @@ Used the `faker` library:
 |--------------------------------------------------|--------------------------------------------------------------------------------------|
 | Storing candidate information                    | Used separate `json` file for this stage.                                            |
 | Storing student response                         | Used separate `json` file for this stage.                                            |
-| Tansition from general question to tech question | just start after general query using `if` condition then use only llm bot for query. |
+| Transition from general question to tech question | just start after general query using `if` condition then use only llm bot for query. |
 | Model system prompt                              | read many website.                                                                   |
 
 ---
