@@ -49,4 +49,36 @@ def anonymize_candidate_info(candidate_data):
     }
 
 
+def ai_ensure_log_directory_exists(chat_path=ai_chat_log_path):
+    """Ensure the log directory exists before reading/writing."""
+    log_dir = os.path.dirname(chat_path)  # Extract directory path from filepath
+    os.makedirs(log_dir, exist_ok=True)  # Create directory if missing
 
+
+def ai_load_chat_history():
+    """Load chat history from file (create empty if missing or corrupted)."""
+    ai_ensure_log_directory_exists()  # Verify directory structure
+    if not os.path.exists(ai_chat_log_path):  # Check file existence
+       ai_save_chat_history({"conversation": []})  # Initialize empty log
+    try:
+        with open(ai_chat_log_path, 'r', encoding='utf-8') as f:
+            return json.load(f)  # Read JSON data
+    except json.JSONDecodeError:  # Handle corrupted files
+        print("Warning: Chat log was corrupted or empty. Resetting...")
+        ai_save_chat_history({"conversation": []})  # Reset file
+        return {"conversation": []}  # Return empty structure
+
+
+def ai_save_chat_history(history):
+    """Save chat history to file."""
+    ai_ensure_log_directory_exists()  # Confirm directory exists
+    with open(ai_chat_log_path, 'w', encoding='utf-8') as f:
+        json.dump(history, f, indent=4)  # Write formatted JSON
+
+
+def clear_chat_log():
+    """Reset the AI chat log and Chat Log file to an empty conversation."""
+    with open(ai_chat_log_path, 'w', encoding='utf-8') as f:
+        json.dump({"conversation": []}, f, indent=4)  # Clear AI chat log
+    with open(chat_log_path, 'w', encoding='utf-8') as f:
+        json.dump({"conversation": []}, f, indent=4)  # Clear user chat log
