@@ -44,13 +44,13 @@ talentscout-chatbot/
 
 ## 🧩 Tech Stack
 
-| Layer         | Tools                                |
-|---------------|--------------------------------------|
-| UI            | Gradio                               |
-| LLM           | Cohere / OpenAI GPT-4                |
-| Prompting     | Manual prompt engineering            |
-| Backend       | Python, langchain, faker             |
-| Deployment    | AWS, HuggingFace Transformers Spaces |
+| Layer         | Tools                       |
+|---------------|-----------------------------|
+| UI            | Gradio                      |
+| LLM           | Cohere / OpenAI GPT-4       |
+| Prompting     | Manual prompt engineering   |
+| Backend       | Python, langchain, faker    |
+| Deployment    | HuggingFace Spaces, ~~AWS~~ |
 
 ---
 
